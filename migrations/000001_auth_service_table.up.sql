@@ -5,8 +5,8 @@ create table if not exists users(
     phone varchar(13)unique ,
     email varchar unique,
     password varchar,
-    created_at timestamp default now(),
-    updated_at timestamp default now(),
+    created_at timestamp with time zone default now(),
+    updated_at timestamp with time zone default now(),
     deleted_at bigint default 0,
     unique(email, deleted_at)
 );
@@ -23,13 +23,13 @@ create table if not exists user_profile(
     followers_count int default 0,
     following_count int default 0,
     posts_count int default 0,
-    created_at timestamp default now(),
-    updated_at timestamp default now(),
+    created_at timestamp with time zone default now(),
+    updated_at timestamp with time zone default now(),
     is_active bool
 );
 
 create table if not exists follows(
     follower_id uuid references users(id),
     following_id uuid references users(id),
-    created_at timestamp default now()
+    created_at timestamp with time zone default now()
 )
