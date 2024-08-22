@@ -1,4 +1,4 @@
-create table users(
+create table if not exists users(
     id uuid default gen_random_uuid() primary key,
     phone varchar(13)unique ,
     email varchar unique,
@@ -9,7 +9,7 @@ create table users(
     unique(email, deleted_at)
 );
 
-create table user_profile(
+create table if not exists user_profile(
     user_id uuid references users(id),
     first_name varchar,
     last_name varchar,
@@ -25,7 +25,7 @@ create table user_profile(
     is_active bool
 );
 
-create table follows(
+create table if not exists follows(
     follower_id uuid references users(id),
     following_id uuid references users(id),
     created_at timestamp default now()
