@@ -1,17 +1,28 @@
 package postgres
 
 import (
-	"auth-service/pkg/config"
 	"auth-service/pkg/models"
 	"fmt"
+	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 	"testing"
 )
 
+func Connect() (*sqlx.DB, error) {
+	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		"localhost", "5432", "postgres", "dodi", "auth_tw")
+
+	db, err := sqlx.Connect("postgres", psqlInfo)
+	if err != nil {
+		return nil, err
+	}
+
+	return db, nil
+}
+
 func TestRegister(t *testing.T) {
 
-	configs := config.Load()
-
-	db, err := ConnectPostgres(configs)
+	db, err := Connect()
 	if err != nil {
 		t.Errorf("Failed to connect to database: %v", err)
 	}
