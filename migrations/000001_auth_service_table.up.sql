@@ -1,3 +1,5 @@
+create type role as enum('admin', 'user','c-admin');
+
 create table if not exists users(
     id uuid default gen_random_uuid() primary key,
     phone varchar(13)unique ,
@@ -16,6 +18,7 @@ create table if not exists user_profile(
     username varchar unique,
     nationality varchar,
     bio varchar,
+    role role default 'user',
     profile_image varchar,
     followers_count int default 0,
     following_count int default 0,
