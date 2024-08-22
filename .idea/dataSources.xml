@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="twitter_auth@localhost" uuid="922f2b64-ec83-4037-8edd-f2947512462e">
+    <data-source source="LOCAL" name="twitter_auth@localhost" uuid="f92a2237-407c-4ec4-a426-043b6680165c">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
