@@ -3,23 +3,23 @@ create table users(
     first_name varchar,
     last_name varchar,
     email varchar unique,
-    email_password varchar,
-    phone varchar(13),
+    phone varchar(13)unique ,
     created_at timestamp default now(),
     updated_at timestamp default now(),
-    deleted_at bigint default 0
+    deleted_at bigint default 0,
+    unique(email, deleted_at)
 );
 
 create table user_profile(
     user_id uuid references users(id),
     username varchar unique,
-    user_password varchar,
+    password varchar,
     nationality varchar,
     bio varchar,
     profile_image varchar,
-    followers_count int,
-    following_count int,
-    posts_count int,
+    followers_count int default 0,
+    following_count int default 0,
+    posts_count int default 0,
     created_at timestamp default now(),
     updated_at timestamp default now(),
     is_active bool
