@@ -25,7 +25,7 @@ create table if not exists user_profile(
     posts_count int default 0,
     created_at timestamp with time zone default now(),
     updated_at timestamp with time zone default now(),
-    is_active bool
+    is_active bool default 'true'
 );
 
 create table if not exists follows(
