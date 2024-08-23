@@ -27,9 +27,10 @@ type LoginEmailRequest struct {
 	Password string `json:"password" db:"password"`
 }
 
-type LoginEmailResponse struct {
+type LoginResponse struct {
 	Id       string `json:"id" db:"id"`
 	Email    string `json:"email" db:"email"`
+	Username string `json:"username" db:"username"`
 	Password string `json:"password" db:"password"`
 	Role     string `json:"role" db:"role"`
 }
@@ -39,9 +40,7 @@ type LoginUsernameRequest struct {
 	Password string `json:"password" db:"password"`
 }
 
-type LoginUsernameResponse struct {
-	Id       string `json:"id" db:"id"`
-	Username string `json:"username" db:"username"`
-	Password string `json:"password" db:"password"`
-	Role     string `json:"role" db:"role"`
+type Tokens struct {
+	AccessToken  string `json:"access_token" db:"access_token"`
+	RefreshToken string `json:"refresh_token" db:"refresh_token"`
 }

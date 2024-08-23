@@ -7,8 +7,8 @@ import (
 
 type AuthStorage interface {
 	Register(in models.RegisterRequest) (models.RegisterResponse, error)
-	LoginEmail(in models.LoginEmailRequest) (models.LoginEmailResponse, error)
-	LoginUsername(in models.LoginUsernameRequest) (models.LoginUsernameResponse, error)
+	LoginEmail(in models.LoginEmailRequest) (models.LoginResponse, error)
+	LoginUsername(in models.LoginUsernameRequest) (models.LoginResponse, error)
 }
 
 type UserStorage interface {
@@ -20,9 +20,7 @@ type UserStorage interface {
 	FetchUsers(in *pb.Filter) (*pb.UserResponses, error)
 	Follow(in *pb.Ids) (*pb.Void, error)
 	UnFollow(in *pb.Ids) (*pb.Void, error)
-	PostAdd(in *pb.Id) (*pb.Void, error)
 	ListOfFollowing(in *pb.Id) (*pb.Followings, error)
 	ListOfFollowers(in *pb.Id) (*pb.Followers, error)
-	PostDelete(in *pb.Id) (*pb.Void, error)
 	DeleteUser(in *pb.Id) (*pb.Void, error)
 }

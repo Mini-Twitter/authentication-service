@@ -51,40 +51,34 @@ func (a *AuthRepo) Register(in models.RegisterRequest) (models.RegisterResponse,
 		Bio:         in.Bio,
 	}, nil
 }
-func (a *AuthRepo) LoginEmail(in models.LoginEmailRequest) (models.LoginEmailResponse, error) {
+func (a *AuthRepo) LoginEmail(in models.LoginEmailRequest) (models.LoginResponse, error) {
 	tx, err := a.db.Begin()
 	if err != nil {
-		return models.LoginEmailResponse{}, err
+		return models.LoginResponse{}, err
 	}
 
-	res := models.LoginEmailResponse{}
+	res := models.LoginResponse{}
 
 	query := `SELECT id, email, password FROM users WHERE email = $1`
 	err = a.db.Get(&res, query, in.Email)
 	if err != nil {
-		return models.LoginEmailResponse{}, err
+		return models.LoginResponse{}, err
 	}
 
-	var role string
-	query1 := `SELECT role FROM user_profile WHERE user_id = $1`
-	err = a.db.Get(&role, query1, res.Id)
+	query1 := `SELECT role, username FROM user_profile WHERE user_id = $1`
+	err = a.db.Get(&res, query1, res.Id)
 
 	err = tx.Commit()
 	if err != nil {
-		return models.LoginEmailResponse{}, err
+		return models.LoginResponse{}, err
 	}
 
-	return models.LoginEmailResponse{
-		Id:       res.Id,
-		Email:    res.Email,
-		Role:     role,
-		Password: res.Password,
-	}, nil
+	return res, nil
 }
-func (a *AuthRepo) LoginUsername(in models.LoginUsernameRequest) (models.LoginUsernameResponse, error) {
+func (a *AuthRepo) LoginUsername(in models.LoginUsernameRequest) (models.LoginResponse, error) {
 	tx, err := a.db.Begin()
 	if err != nil {
-		return models.LoginUsernameResponse{}, err
+		return models.LoginResponse{}, err
 	}
 
 	var id string
@@ -92,25 +86,26 @@ func (a *AuthRepo) LoginUsername(in models.LoginUsernameRequest) (models.LoginUs
 	query := `SELECT role, user_id FROM user_profile WHERE username = $1`
 	err = a.db.QueryRow(query, in.Username).Scan(&role, &id)
 	if err != nil {
-		return models.LoginUsernameResponse{}, err
+		return models.LoginResponse{}, err
 	}
 
-	var password string
-	query1 := `SELECT password FROM users WHERE id = $1`
-	err = a.db.Get(&password, query1, id)
+	res := models.LoginResponse{}
+	query1 := `SELECT password, email FROM users WHERE id = $1`
+	err = a.db.Get(&res, query1, id)
 	if err != nil {
-		return models.LoginUsernameResponse{}, err
+		return models.LoginResponse{}, err
 	}
 
 	err = tx.Commit()
 	if err != nil {
-		return models.LoginUsernameResponse{}, err
+		return models.LoginResponse{}, err
 	}
 
-	return models.LoginUsernameResponse{
+	return models.LoginResponse{
 		Id:       id,
+		Email:    res.Email,
 		Username: in.Username,
-		Password: password,
+		Password: in.Password,
 		Role:     role,
 	}, nil
 }
