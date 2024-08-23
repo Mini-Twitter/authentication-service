@@ -19,7 +19,7 @@ create table if not exists user_profile(
     nationality varchar,
     bio varchar,
     role role default 'user',
-    profile_image varchar,
+    profile_image varchar default 'no images',
     followers_count int default 0,
     following_count int default 0,
     posts_count int default 0,
