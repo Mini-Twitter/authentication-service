@@ -2,6 +2,7 @@ package handler
 
 import (
 	"auth-service/pkg/models"
+	"auth-service/service"
 	"github.com/gin-gonic/gin"
 	"log/slog"
 	"net/http"
@@ -14,11 +15,12 @@ type AuthHandler interface {
 }
 
 type authHandler struct {
+	srv service.AuthService
 	log *slog.Logger
 }
 
-func NewAuthHandler(log *slog.Logger) AuthHandler {
-	return &authHandler{log: log}
+func NewAuthHandler(log *slog.Logger, sr service.AuthService) AuthHandler {
+	return &authHandler{log: log, srv: sr}
 }
 
 // @Summary Register Users
@@ -41,14 +43,14 @@ func (h *authHandler) Register(c *gin.Context) {
 		return
 	}
 
-	//res, err := h.
-	//if err != nil {
-	//	h.log.Error("Error occurred while authenticating user", err)
-	//	c.JSON(http.StatusInternalServerError, err)
-	//	return
-	//}
-	//
-	//c.JSON(http.StatusOK, res)
+	res, err := h.srv.Register(auth)
+	if err != nil {
+		h.log.Error("Error occurred while register", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
 }
 
 // @Summary LoginEmail Users
@@ -71,13 +73,17 @@ func (h *authHandler) LoginEmail(c *gin.Context) {
 		return
 	}
 
-	//res, err := h.LoginEmail(auth)
-	//if err != nil {
-	//	h.log.Error("Error occurred while login", err)
-	//	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	//	return
-	//}
-	//c.JSON(http.StatusOK, res)
+	res, err := h.srv.LoginEmail(auth)
+	if err != nil {
+		h.log.Error("Error occurred while login", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.SetCookie("access_token", res.AccessToken, 3600, "", "", false, true)
+	c.SetCookie("refresh_token", res.RefreshToken, 3600, "", "", false, true)
+
+	c.JSON(http.StatusOK, res)
 }
 
 // @Summary LoginUsername Users
@@ -99,12 +105,15 @@ func (h *authHandler) LoginUsername(c *gin.Context) {
 		return
 	}
 
-	//res, err := h.LoginUsername(res)
-	//if err != nil {
-	//	h.log.Error("Error occurred while login", err)
-	//	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	//	return
-	//}
-	//
-	//c.JSON(http.StatusOK, gin.H{"data": res})
+	res, err := h.srv.LoginUsername(auth)
+	if err != nil {
+		h.log.Error("Error occurred while login", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.SetCookie("access_token", res.AccessToken, 3600, "", "", false, true)
+	c.SetCookie("refresh_token", res.RefreshToken, 3600, "", "", false, true)
+
+	c.JSON(http.StatusOK, res)
 }

@@ -10,6 +10,13 @@ import (
 )
 
 type AuthService interface {
+	Register(in models.RegisterRequest) (models.RegisterResponse, error)
+	LoginEmail(in models.LoginEmailRequest) (models.Tokens, error)
+	LoginUsername(in models.LoginUsernameRequest) (models.Tokens, error)
+}
+
+func NewAuthService(st storage.AuthStorage, logger *slog.Logger) AuthService {
+	return &authService{st, logger}
 }
 
 type authService struct {
