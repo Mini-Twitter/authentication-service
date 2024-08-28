@@ -1,9 +1,11 @@
 package postgres
 
 import (
-	config "auth-service/pkg/config"
+	"auth-service/pkg/config"
 	"fmt"
 	"github.com/jmoiron/sqlx"
+
+	_ "github.com/lib/pq"
 )
 
 func ConnectPostgres(config config.Config) (*sqlx.DB, error) {

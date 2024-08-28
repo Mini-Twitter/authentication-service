@@ -78,3 +78,8 @@
 {"time":"2024-08-14T18:28:16.928585667+05:00","level":"INFO","msg":"gRPC server listening on :50050"}
 {"time":"2024-08-14T18:28:55.68011607+05:00","level":"INFO","msg":"gRPC server listening on :50050"}
 {"time":"2024-08-18T22:55:39.118961145+05:00","level":"ERROR","msg":"Error connecting to database","error":"dial tcp: lookup postgres on 127.0.0.53:53: server misbehaving"}
+{"time":"2024-08-28T15:39:17.183025237+05:00","level":"ERROR","msg":"Error connecting to database","error":"sql: unknown driver \"postgres\" (forgotten import?)"}
+{"time":"2024-08-28T15:39:38.139875502+05:00","level":"ERROR","msg":"Error connecting to database","error":"sql: unknown driver \"postgres\" (forgotten import?)"}
+{"time":"2024-08-28T15:40:17.941201844+05:00","level":"ERROR","msg":"Error connecting to database","error":"sql: unknown driver \"postgres\" (forgotten import?)"}
+{"time":"2024-08-28T15:41:25.399574286+05:00","level":"ERROR","msg":"Error connecting to database","error":"sql: unknown driver \"postgres\" (forgotten import?)"}
+{"time":"2024-08-28T15:41:56.637947409+05:00","level":"ERROR","msg":"Error connecting to database","error":"sql: unknown driver \"postgres\" (forgotten import?)"}
