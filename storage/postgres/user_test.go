@@ -188,3 +188,93 @@ func TestListOfFollowers(t *testing.T) {
 	}
 	fmt.Println(req)
 }
+
+func TestFollow(t *testing.T) {
+	db, err := ConnectUser()
+	if err != nil {
+		t.Errorf("Failed to connect to database: %v", err)
+	}
+
+	user := NewUserRepo(db)
+
+	rst := pb.FollowReq{
+		FollowingId: "3a27bff7-40e4-4074-a63b-b5af91211e2f",
+		FollowerId:  "ef778e7b-059c-4117-8e8d-837a3dff0e76",
+	}
+
+	req, err := user.Follow(&rst)
+	if err != nil {
+		t.Errorf("Failed to follow: %v", err)
+	}
+	fmt.Println(req)
+}
+
+func TestUnfollow(t *testing.T) {
+	db, err := ConnectUser()
+	if err != nil {
+		t.Errorf("Failed to connect to database: %v", err)
+	}
+	user := NewUserRepo(db)
+
+	rst := pb.FollowReq{
+		FollowingId: "3a27bff7-40e4-4074-a63b-b5af91211e2f",
+		FollowerId:  "17b04d19-ddf6-42a0-81ba-219cfd618956",
+	}
+
+	req, err := user.Unfollow(&rst)
+	if err != nil {
+		t.Errorf("Failed to unfollow: %v", err)
+	}
+	fmt.Println(req)
+}
+
+func TestGetUserFollowers(t *testing.T) {
+	db, err := ConnectUser()
+	if err != nil {
+		t.Errorf("Failed to connect to database: %v", err)
+	}
+	user := NewUserRepo(db)
+
+	rst := pb.Id{
+		UserId: "3a27bff7-40e4-4074-a63b-b5af91211e2f",
+	}
+
+	req, err := user.GetUserFollowers(&rst)
+	if err != nil {
+		t.Errorf("Failed to get followers: %v", err)
+	}
+	fmt.Println(req)
+}
+
+func TestGetUserFollows(t *testing.T) {
+	db, err := ConnectUser()
+	if err != nil {
+		t.Errorf("Failed to connect to database: %v", err)
+	}
+	user := NewUserRepo(db)
+
+	rst := pb.Id{
+		UserId: "3a27bff7-40e4-4074-a63b-b5af91211e2f",
+	}
+
+	req, err := user.GetUserFollows(&rst)
+	if err != nil {
+		t.Errorf("Failed to get followers: %v", err)
+	}
+	fmt.Println(req)
+}
+
+func TestMostPopularUser(t *testing.T) {
+	db, err := ConnectUser()
+	if err != nil {
+		t.Errorf("Failed to connect to database: %v", err)
+	}
+	user := NewUserRepo(db)
+
+	rst := pb.Void{}
+	req, err := user.MostPopularUser(&rst)
+	if err != nil {
+		t.Errorf("Failed to most popular user: %v", err)
+	}
+	fmt.Println(req)
+}

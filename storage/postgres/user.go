@@ -2,6 +2,8 @@ package postgres
 
 import (
 	"auth-service/storage"
+	"context"
+	"database/sql"
 	"errors"
 	"fmt"
 	"github.com/jmoiron/sqlx"
@@ -186,4 +188,95 @@ func (p *UserRepo) DeleteUser(req *pb.Id) (*pb.Void, error) {
 	}
 
 	return &pb.Void{}, nil
+}
+
+// ----------------------------------------------------------------------------------------
+
+func (p *UserRepo) Follow(in *pb.FollowReq) (*pb.FollowRes, error) {
+	query := `INSERT INTO follows (follower_id, following_id, created_at)
+	          VALUES ($1, $2, NOW())
+	          RETURNING follower_id, following_id, created_at`
+
+	var res pb.FollowRes
+	err := p.db.QueryRowContext(context.Background(), query, in.FollowerId, in.FollowingId).Scan(
+		&res.FollowerId, &res.FollowingId, &res.FollowedAt)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+func (p *UserRepo) Unfollow(in *pb.FollowReq) (*pb.DFollowRes, error) {
+	query := `DELETE FROM follows WHERE follower_id = $1 AND following_id = $2
+	          RETURNING follower_id, following_id`
+
+	var res pb.DFollowRes
+	err := p.db.QueryRowContext(context.Background(), query, in.FollowerId, in.FollowingId).Scan(
+		&res.FollowerId, &res.FollowingId)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("no such follow relation exists")
+		}
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+func (p *UserRepo) GetUserFollowers(in *pb.Id) (*pb.Count, error) {
+	query := `SELECT COUNT(*) FROM follows WHERE following_id = $1`
+
+	var count pb.Count
+	err := p.db.QueryRowContext(context.Background(), query, in.UserId).Scan(&count.Count)
+	if err != nil {
+		return nil, err
+	}
+
+	return &count, nil
+}
+
+func (p *UserRepo) GetUserFollows(in *pb.Id) (*pb.Count, error) {
+	query := `SELECT COUNT(*) FROM follows WHERE follower_id = $1`
+
+	var count pb.Count
+	err := p.db.QueryRowContext(context.Background(), query, in.UserId).Scan(&count.Count)
+	if err != nil {
+		return nil, err
+	}
+
+	return &count, nil
+}
+
+func (p *UserRepo) MostPopularUser(in *pb.Void) (*pb.UserResponse, error) {
+	var (
+		userID string
+	)
+
+	query := `SELECT follower_id FROM follows ORDER BY follower_id DESC LIMIT 1`
+
+	var user pb.UserResponse
+	err := p.db.QueryRow(query).Scan(&userID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get most popular user: %w", err)
+	}
+
+	query1 := `SELECT u.id, u.email, u.phone, p.first_name, p.last_name, p.username, p.nationality, p.bio, p.created_at
+	          FROM users u
+	          JOIN user_profile p ON u.id = p.user_id
+	          WHERE u.id = $1 and role != 'c-admin' and u.deleted_at = 0`
+
+	row := p.db.QueryRow(query1, userID)
+	err = row.Scan(&user.Id, &user.Email, &user.Phone, &user.FirstName, &user.LastName, &user.Username, &user.Nationality,
+		&user.Bio, &user.CreatedAt)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, errors.New("user not found")
+		}
+		return nil, err
+	}
+
+	return &user, nil
 }

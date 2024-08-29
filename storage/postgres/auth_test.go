@@ -10,7 +10,7 @@ import (
 
 func Connect() (*sqlx.DB, error) {
 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		"localhost", "5432", "postgres", "123321", "twitter_auth")
+		"localhost", "5432", "postgres", "dodi", "auth_tw")
 
 	db, err := sqlx.Connect("postgres", psqlInfo)
 	if err != nil {
@@ -28,12 +28,12 @@ func TestRegister(t *testing.T) {
 	}
 
 	rst := models.RegisterRequest{
-		FirstName:   "Hamidulloh",
-		LastName:    "Hamidullayev",
-		Email:       "hamidulloh@gmail.com",
-		Password:    "hamidulloh",
-		Phone:       "999747178",
-		Username:    "hamidulloh",
+		FirstName:   "Hamidulloh3",
+		LastName:    "Hamidullayev4",
+		Email:       "hamidulloh5@gmail.com",
+		Password:    "hamidulloh6",
+		Phone:       "9997471785",
+		Username:    "hamidulloh4",
 		Nationality: "...",
 		Bio: "..................." +
 			".....................",

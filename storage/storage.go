@@ -21,4 +21,10 @@ type UserStorage interface {
 	ListOfFollowing(in *pb.Id) (*pb.Followings, error)
 	ListOfFollowers(in *pb.Id) (*pb.Followers, error)
 	DeleteUser(in *pb.Id) (*pb.Void, error)
+
+	Follow(in *pb.FollowReq) (*pb.FollowRes, error)
+	Unfollow(in *pb.FollowReq) (*pb.DFollowRes, error)
+	GetUserFollowers(in *pb.Id) (*pb.Count, error)
+	GetUserFollows(in *pb.Id) (*pb.Count, error)
+	MostPopularUser(in *pb.Void) (*pb.UserResponse, error)
 }
