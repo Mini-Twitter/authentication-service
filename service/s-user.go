@@ -20,6 +20,12 @@ type UserServices interface {
 	ListOfFollowers(ctx context.Context, in *pb.Id) (*pb.Followers, error)
 	PostDelete(ctx context.Context, in *pb.Id) (*pb.Void, error) //MASHIYAM YOQ
 	DeleteUser(ctx context.Context, in *pb.Id) (*pb.Void, error)
+
+	Follow(ctx context.Context, in *pb.FollowReq) (*pb.FollowRes, error)
+	Unfollow(ctx context.Context, in *pb.FollowReq) (*pb.DFollowRes, error)
+	GetUserFollowers(ctx context.Context, in *pb.Id) (*pb.Count, error)
+	GetUserFollows(ctx context.Context, in *pb.Id) (*pb.Count, error)
+	MostPopularUser(ctx context.Context, in *pb.Void) (*pb.UserResponse, error)
 }
 
 type UserService struct {
@@ -120,6 +126,50 @@ func (us *UserService) DeleteUser(ctx context.Context, in *pb.Id) (*pb.Void, err
 	res, err := us.st.DeleteUser(in)
 	if err != nil {
 		us.log.Error("failed to delete user", "error", err)
+		return nil, err
+	}
+	return res, nil
+}
+
+func (us *UserService) Follow(ctx context.Context, in *pb.FollowReq) (*pb.FollowRes, error) {
+	res, err := us.st.Follow(in)
+	if err != nil {
+		us.log.Error("failed to follow", "error", err)
+		return nil, err
+	}
+	return res, nil
+}
+
+func (us *UserService) Unfollow(ctx context.Context, in *pb.FollowReq) (*pb.DFollowRes, error) {
+	res, err := us.st.Unfollow(in)
+	if err != nil {
+		us.log.Error("failed to unfollow", "error", err)
+		return nil, err
+	}
+	return res, nil
+}
+
+func (us *UserService) GetUserFollowers(ctx context.Context, in *pb.Id) (*pb.Count, error) {
+	res, err := us.st.GetUserFollowers(in)
+	if err != nil {
+		us.log.Error("failed to get user followers", "error", err)
+		return nil, err
+	}
+	return res, nil
+}
+
+func (us *UserService) GetUserFollows(ctx context.Context, in *pb.Id) (*pb.Count, error) {
+	res, err := us.st.GetUserFollows(in)
+	if err != nil {
+		us.log.Error("failed to get user follows", "error", err)
+		return nil, err
+	}
+	return res, nil
+}
+func (us *UserService) MostPopularUser(ctx context.Context, in *pb.Void) (*pb.UserResponse, error) {
+	res, err := us.st.MostPopularUser(in)
+	if err != nil {
+		us.log.Error("failed to most popular user", "error", err)
 		return nil, err
 	}
 	return res, nil
