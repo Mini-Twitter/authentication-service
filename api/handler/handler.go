@@ -6,6 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"log/slog"
 	"net/http"
+
+	_ "auth-service/api/docs"
 )
 
 type AuthHandler interface {
@@ -59,7 +61,7 @@ func (h *authHandler) Register(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param LoginEmail body models.LoginEmailRequest true "register user"
-// @Success 200 {object} models.LoginEmailResponse
+// @Success 200 {object} models.Tokens
 // @Failure 400 {object} models.Error
 // @Failure 404 {object} models.Error
 // @Failure 500 {object} models.Error
@@ -92,7 +94,7 @@ func (h *authHandler) LoginEmail(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param LoginUsername body models.LoginUsernameRequest true "register user"
-// @Success 200 {object} models.LoginUsernameResponse
+// @Success 200 {object} models.Tokens
 // @Failure 400 {object} models.Error
 // @Failure 404 {object} models.Error
 // @Failure 500 {object} models.Error
