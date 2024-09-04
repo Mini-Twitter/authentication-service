@@ -1,5 +1,12 @@
 basePath: /auth
 definitions:
+  models.AcceptCode:
+    properties:
+      code:
+        type: string
+      email:
+        type: string
+    type: object
   models.Error:
     properties:
       error:
@@ -70,6 +77,32 @@ info:
   title: Authenfication service
   version: "1.0"
 paths:
+  /accept-code:
+    post:
+      description: it accepts code to register
+      parameters:
+      - description: enough
+        in: body
+        name: token
+        required: true
+        schema:
+          $ref: '#/definitions/models.AcceptCode'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Accept code to register
+      tags:
+      - Auth
   /login/email:
     post:
       consumes:

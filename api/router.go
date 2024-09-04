@@ -42,6 +42,7 @@ func (r *router) InitRouter() {
 		auth.POST("/register", r.handlers.Register)
 		auth.POST("/login/email", r.handlers.LoginEmail)
 		auth.POST("/login/username", r.handlers.LoginUsername)
+		auth.POST("/accept-code", r.handlers.AcceptCodeToRegister)
 	}
 }
 

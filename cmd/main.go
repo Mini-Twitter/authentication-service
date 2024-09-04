@@ -8,6 +8,7 @@ import (
 	"auth-service/pkg/logs"
 	"auth-service/service"
 	"auth-service/storage/postgres"
+	"auth-service/storage/redis"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -16,6 +17,7 @@ import (
 func main() {
 	logger := logs.InitLogger()
 	cofg := config.Load()
+	redisClient := redis.ConnectDB()
 
 	db, err := postgres.ConnectPostgres(cofg)
 	if err != nil {
@@ -47,7 +49,8 @@ func main() {
 
 	authSt := postgres.NewAuthRepo(db)
 	authSr := service.NewAuthService(authSt, logger)
-	authHd := handler.NewAuthHandler(logger, authSr)
+	redis1 := redis.NewRedisStorage(redisClient, logger)
+	authHd := handler.NewAuthHandler(logger, authSr, redis1)
 	router := api.NewRouter(authHd)
 
 	router.InitRouter()
