@@ -4,6 +4,7 @@ import (
 	"auth-service/pkg/models"
 	"auth-service/storage"
 	"github.com/jmoiron/sqlx"
+	"log"
 )
 
 type AuthRepo struct {
@@ -95,7 +96,7 @@ func (a *AuthRepo) LoginUsername(in models.LoginUsernameRequest) (models.LoginRe
 	if err != nil {
 		return models.LoginResponse{}, err
 	}
-
+	log.Println()
 	err = tx.Commit()
 	if err != nil {
 		return models.LoginResponse{}, err
@@ -105,7 +106,7 @@ func (a *AuthRepo) LoginUsername(in models.LoginUsernameRequest) (models.LoginRe
 		Id:       id,
 		Email:    res.Email,
 		Username: in.Username,
-		Password: in.Password,
+		Password: res.Password,
 		Role:     role,
 	}, nil
 }

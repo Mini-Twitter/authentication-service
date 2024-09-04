@@ -9,7 +9,7 @@ import (
 )
 
 type Claims struct {
-	ID       string `json:"id"`
+	ID       string `json:"user_id"`
 	Role     string `json:"role"`
 	Email    string `json:"email"`
 	Username string `json:"username"`

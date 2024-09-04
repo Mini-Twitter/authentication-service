@@ -84,6 +84,7 @@ func (a *authService) LoginUsername(in models.LoginUsernameRequest) (models.Toke
 	}
 
 	check := hashing.CheckPasswordHash(res.Password, in.Password)
+	log.Println(check)
 	if !check {
 		a.log.Error("Invalid password")
 		log.Println("\n----------", in.Password, res.Password, "\n---------")
