@@ -105,7 +105,7 @@ func (a *AuthRepo) LoginUsername(in models.LoginUsernameRequest) (models.LoginRe
 		Id:       id,
 		Email:    res.Email,
 		Username: in.Username,
-		Password: in.Password,
+		Password: res.Password,
 		Role:     role,
 	}, nil
 }
