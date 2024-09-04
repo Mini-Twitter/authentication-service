@@ -6,6 +6,7 @@ import (
 	"auth-service/pkg/token"
 	"auth-service/storage"
 	"errors"
+	"log"
 	"log/slog"
 )
 
@@ -85,6 +86,7 @@ func (a *authService) LoginUsername(in models.LoginUsernameRequest) (models.Toke
 	check := hashing.CheckPasswordHash(res.Password, in.Password)
 	if !check {
 		a.log.Error("Invalid password")
+		log.Println("\n----------", in.Password, res.Password, "\n---------")
 		return models.Tokens{}, errors.New("Invalid password")
 	}
 

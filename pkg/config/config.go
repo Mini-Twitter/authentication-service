@@ -30,7 +30,7 @@ func Load() Config {
 
 	config.AUTH_PORT = cast.ToString(coalesce("AUTH_PORT", ":8081"))
 	config.USER_PORT = cast.ToString(coalesce("USER_PORT", ":50050"))
-	config.DB_HOST = cast.ToString(coalesce("DB_HOST", "localhost"))
+	config.DB_HOST = cast.ToString(coalesce("DB_HOST", "postgres"))
 	config.DB_PORT = cast.ToString(coalesce("DB_PORT", "5432"))
 	config.DB_NAME = cast.ToString(coalesce("DB_NAME", "twitter_auth"))
 	config.DB_USER = cast.ToString(coalesce("DB_USER", "postgres"))

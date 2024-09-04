@@ -23,7 +23,7 @@ services:
     networks:
       - success-net
     ports:
-      - 5433:5432
+      - 5435:5432
     volumes:
       - postgres_data:/postgres/data
     healthcheck:
