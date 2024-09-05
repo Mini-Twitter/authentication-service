@@ -110,3 +110,39 @@
 {"time":"2024-09-05T17:14:43.066811789+05:00","level":"ERROR","msg":"Failed to get register from redis","error":"dial tcp: lookup redis on 127.0.0.53:53: server misbehaving"}
 {"time":"2024-09-05T17:15:46.870448096+05:00","level":"INFO","msg":"Starting server on port :50050"}
 {"time":"2024-09-05T17:15:54.859662533+05:00","level":"INFO","msg":"Successfully saved to redis"}
+{"time":"2024-09-05T18:01:05.439706213+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T20:02:21.150970569+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T20:07:28.329223963+05:00","level":"ERROR","msg":"Invalid email provided","!BADKEY":"invalid format"}
+{"time":"2024-09-05T20:07:47.491525085+05:00","level":"INFO","msg":"Successfully saved to redis"}
+{"time":"2024-09-05T20:30:20.995250219+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T20:30:28.049862836+05:00","level":"ERROR","msg":"failed to change password","error":"password is incorrect"}
+{"time":"2024-09-05T20:30:59.117147599+05:00","level":"ERROR","msg":"failed to change password","error":"password is incorrect"}
+{"time":"2024-09-05T20:31:24.1682351+05:00","level":"ERROR","msg":"failed to change password","error":"password is incorrect"}
+{"time":"2024-09-05T20:32:11.373691385+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T20:32:33.929606158+05:00","level":"ERROR","msg":"Invalid password"}
+{"time":"2024-09-05T20:32:33.92966499+05:00","level":"ERROR","msg":"Error occurred while login","!BADKEY":"Invalid password"}
+{"time":"2024-09-05T20:44:58.45774605+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T20:45:30.21492315+05:00","level":"ERROR","msg":"Invalid password"}
+{"time":"2024-09-05T20:45:30.215013991+05:00","level":"ERROR","msg":"Error occurred while login","!BADKEY":"Invalid password"}
+{"time":"2024-09-05T20:46:57.565317941+05:00","level":"ERROR","msg":"Invalid password"}
+{"time":"2024-09-05T20:46:57.565389185+05:00","level":"ERROR","msg":"Error occurred while login","!BADKEY":"Invalid password"}
+{"time":"2024-09-05T20:48:32.76641943+05:00","level":"ERROR","msg":"Invalid password"}
+{"time":"2024-09-05T20:48:32.766502345+05:00","level":"ERROR","msg":"Error occurred while login","!BADKEY":"Invalid password"}
+{"time":"2024-09-05T20:49:55.150216316+05:00","level":"ERROR","msg":"failed to delete user","error":"failed to mark user as deleted: pq: invalid input syntax for type uuid: \"{user_id}\""}
+{"time":"2024-09-05T20:50:41.808031306+05:00","level":"ERROR","msg":"failed to delete user","error":"failed to mark user as deleted: pq: invalid input syntax for type uuid: \"{user_id}\""}
+{"time":"2024-09-05T20:57:45.56480741+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T20:57:47.142346319+05:00","level":"ERROR","msg":"Failed to login","error":"sql: no rows in result set"}
+{"time":"2024-09-05T20:57:47.142387624+05:00","level":"ERROR","msg":"Error occurred while login","!BADKEY":"sql: no rows in result set"}
+{"time":"2024-09-05T20:57:48.965798284+05:00","level":"ERROR","msg":"Failed to login","error":"sql: no rows in result set"}
+{"time":"2024-09-05T20:57:48.965858394+05:00","level":"ERROR","msg":"Error occurred while login","!BADKEY":"sql: no rows in result set"}
+{"time":"2024-09-05T21:03:43.967871443+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T21:13:29.962641871+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T21:15:17.739898888+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T21:16:06.235412482+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T21:17:31.135436634+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T21:22:16.7604186+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T21:26:17.656139752+05:00","level":"ERROR","msg":"failed to get user","error":"pq: invalid input syntax for type uuid: \"{user_id}\""}
+{"time":"2024-09-05T21:28:03.969994095+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T21:29:06.869396886+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T21:29:25.034285812+05:00","level":"ERROR","msg":"failed to get user","error":"sql: no rows in result set"}
+{"time":"2024-09-05T21:32:53.279291389+05:00","level":"ERROR","msg":"failed to follow","error":"pq: invalid input syntax for type uuid: \"string\""}

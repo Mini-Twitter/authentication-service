@@ -1,6 +1,7 @@
 package postgres
 
 import (
+	"auth-service/pkg/hashing"
 	"auth-service/storage"
 	"context"
 	"database/sql"
@@ -46,7 +47,7 @@ func (p *UserRepo) GetProfile(req *pb.Id) (*pb.GetProfileResponse, error) {
 	                   p.followers_count, p.following_count, p.posts_count
 	          FROM users u
 	          JOIN user_profile p ON u.id = p.user_id
-	          WHERE u.id = $1 and role != 'c-admin' and u.deleted_at = 0`
+	          WHERE u.id = $1 and p.role != 'admin' and u.deleted_at = 0`
 
 	row := p.db.QueryRow(query, req.UserId)
 	var res pb.GetProfileResponse
@@ -76,8 +77,23 @@ func (p *UserRepo) UpdateProfile(req *pb.UpdateProfileRequest) (*pb.UserResponse
 }
 
 func (p *UserRepo) ChangePassword(req *pb.ChangePasswordRequest) (*pb.ChangePasswordResponse, error) {
-	query := `UPDATE users SET password = $1, updated_at = now() WHERE id = $2`
-	_, err := p.db.Exec(query, req.NewPassword, req.UserId)
+	query := `SELECT password FROM users WHERE id = $1 and deleted_at = 0`
+
+	row := p.db.QueryRow(query, req.UserId)
+	var password string
+	err := row.Scan(&password)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, errors.New("user not found")
+		}
+		return nil, err
+	}
+	ok := hashing.CheckPasswordHash(password, req.CurrentPassword)
+	if !ok {
+		return nil, errors.New("password is incorrect")
+	}
+	query = `UPDATE users SET password = $1, updated_at = now() WHERE id = $2`
+	_, err = p.db.Exec(query, req.NewPassword, req.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -96,13 +112,13 @@ func (p *UserRepo) ChangeProfileImage(req *pb.URL) (*pb.Void, error) {
 }
 
 func (p *UserRepo) FetchUsers(req *pb.Filter) (*pb.UserResponses, error) {
-	query := `SELECT u.id, u.email, p.first_name, p.last_name, p.username, p.created_at
+	query := `SELECT u.id, u.email, p.first_name, p.last_name, p.username, u.created_at
 	          FROM users u
 	          JOIN user_profile p ON u.id = p.user_id
-	          WHERE p.role = $1
+	          WHERE p.username ILIKE $1 and p.role = 'user'
 	          LIMIT $2 OFFSET $3`
 
-	rows, err := p.db.Query(query, req.Role, req.Limit, (req.Page-1)*req.Limit)
+	rows, err := p.db.Query(query, req.FirstName, req.Limit, (req.Page-1)*req.Limit)
 	if err != nil {
 		return nil, err
 	}

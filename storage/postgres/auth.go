@@ -60,7 +60,7 @@ func (a *AuthRepo) LoginEmail(in models.LoginEmailRequest) (models.LoginResponse
 
 	res := models.LoginResponse{}
 
-	query := `SELECT id, email, password FROM users WHERE email = $1`
+	query := `SELECT id, email, password FROM users WHERE email = $1 and deleted_at = 0`
 	err = a.db.Get(&res, query, in.Email)
 	if err != nil {
 		return models.LoginResponse{}, err
@@ -91,7 +91,7 @@ func (a *AuthRepo) LoginUsername(in models.LoginUsernameRequest) (models.LoginRe
 	}
 
 	res := models.LoginResponse{}
-	query1 := `SELECT password, email FROM users WHERE id = $1`
+	query1 := `SELECT password, email FROM users WHERE id = $1 and deleted_at = 0`
 	err = a.db.Get(&res, query1, id)
 	if err != nil {
 		return models.LoginResponse{}, err

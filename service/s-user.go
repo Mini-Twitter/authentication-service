@@ -78,6 +78,14 @@ func (us *UserService) UpdateProfile(ctx context.Context, in *pb.UpdateProfileRe
 }
 
 func (us *UserService) ChangePassword(ctx context.Context, in *pb.ChangePasswordRequest) (*pb.ChangePasswordResponse, error) {
+	hash, err := hashing.HashPassword(in.NewPassword)
+	if err != nil {
+		us.log.Error("Failed to hash password", "error", err)
+		return nil, err
+	}
+
+	in.NewPassword = hash
+
 	res, err := us.st.ChangePassword(in)
 	if err != nil {
 		us.log.Error("failed to change password", "error", err)
