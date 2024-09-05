@@ -86,3 +86,27 @@
 {"time":"2024-08-29T13:36:56.900828262+05:00","level":"INFO","msg":"Starting server on port :50050"}
 {"time":"2024-08-29T13:37:57.185100633+05:00","level":"INFO","msg":"Starting server on port :50050"}
 {"time":"2024-08-30T20:14:38.422578834+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-04T20:15:20.605798423+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-04T20:15:44.400576346+05:00","level":"ERROR","msg":"Error in Set","err":"dial tcp: lookup redis on 127.0.0.53:53: server misbehaving"}
+{"time":"2024-09-04T20:15:44.40068724+05:00","level":"ERROR","msg":"Failed to register user","!BADKEY":"failed to set code in Redis: dial tcp: lookup redis on 127.0.0.53:53: server misbehaving"}
+{"time":"2024-09-05T17:11:22.594936932+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T17:11:49.340849863+05:00","level":"ERROR","msg":"Error in Set","err":"dial tcp: lookup redis on 127.0.0.53:53: server misbehaving"}
+{"time":"2024-09-05T17:11:49.340941756+05:00","level":"ERROR","msg":"Failed to register user","!BADKEY":"failed to set code in Redis: dial tcp: lookup redis on 127.0.0.53:53: server misbehaving"}
+{"time":"2024-09-05T17:12:06.539269482+05:00","level":"ERROR","msg":"Failed to login","error":"dial tcp: lookup postgres on 127.0.0.53:53: server misbehaving"}
+{"time":"2024-09-05T17:12:06.539314096+05:00","level":"ERROR","msg":"Error occurred while login","!BADKEY":"dial tcp: lookup postgres on 127.0.0.53:53: server misbehaving"}
+{"time":"2024-09-05T17:12:26.027417777+05:00","level":"ERROR","msg":"Failed to login","error":"dial tcp: lookup postgres on 127.0.0.53:53: server misbehaving"}
+{"time":"2024-09-05T17:12:26.027471528+05:00","level":"ERROR","msg":"Error occurred while login","!BADKEY":"dial tcp: lookup postgres on 127.0.0.53:53: server misbehaving"}
+{"time":"2024-09-05T17:13:04.279078969+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T17:13:08.018805334+05:00","level":"ERROR","msg":"Failed to login","error":"dial tcp: lookup postgres on 127.0.0.53:53: server misbehaving"}
+{"time":"2024-09-05T17:13:08.018865238+05:00","level":"ERROR","msg":"Error occurred while login","!BADKEY":"dial tcp: lookup postgres on 127.0.0.53:53: server misbehaving"}
+{"time":"2024-09-05T17:13:08.718351051+05:00","level":"ERROR","msg":"Failed to login","error":"dial tcp: lookup postgres on 127.0.0.53:53: server misbehaving"}
+{"time":"2024-09-05T17:13:08.718412367+05:00","level":"ERROR","msg":"Error occurred while login","!BADKEY":"dial tcp: lookup postgres on 127.0.0.53:53: server misbehaving"}
+{"time":"2024-09-05T17:13:31.503289491+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T17:13:43.889822314+05:00","level":"ERROR","msg":"Failed to login","error":"sql: no rows in result set"}
+{"time":"2024-09-05T17:13:43.889848674+05:00","level":"ERROR","msg":"Error occurred while login","!BADKEY":"sql: no rows in result set"}
+{"time":"2024-09-05T17:14:01.046407609+05:00","level":"ERROR","msg":"Error in Set","err":"dial tcp: lookup redis on 127.0.0.53:53: server misbehaving"}
+{"time":"2024-09-05T17:14:01.046484073+05:00","level":"ERROR","msg":"Failed to register user","!BADKEY":"failed to set code in Redis: dial tcp: lookup redis on 127.0.0.53:53: server misbehaving"}
+{"time":"2024-09-05T17:14:43.066777083+05:00","level":"ERROR","msg":"Error in GetRegister","err":"dial tcp: lookup redis on 127.0.0.53:53: server misbehaving"}
+{"time":"2024-09-05T17:14:43.066811789+05:00","level":"ERROR","msg":"Failed to get register from redis","error":"dial tcp: lookup redis on 127.0.0.53:53: server misbehaving"}
+{"time":"2024-09-05T17:15:46.870448096+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T17:15:54.859662533+05:00","level":"INFO","msg":"Successfully saved to redis"}

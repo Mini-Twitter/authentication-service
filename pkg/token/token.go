@@ -24,7 +24,7 @@ func GenerateAccessToken(in models.LoginResponse) (string, error) {
 		Username: in.Username,
 		StandardClaims: jwt.StandardClaims{
 			IssuedAt:  time.Now().Unix(),
-			ExpiresAt: time.Now().Add(time.Minute * 10).Unix(),
+			ExpiresAt: time.Now().Add(time.Hour * 10).Unix(),
 		},
 	}
 
@@ -45,7 +45,7 @@ func GenerateRefreshToken(in models.LoginResponse) (string, error) {
 		Username: in.Username,
 		StandardClaims: jwt.StandardClaims{
 			IssuedAt:  time.Now().Unix(),
-			ExpiresAt: time.Now().Add(time.Minute * 10).Unix(),
+			ExpiresAt: time.Now().Add(time.Hour * 12).Unix(),
 		},
 	}
 
