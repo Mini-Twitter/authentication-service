@@ -20,6 +20,8 @@ type UserStorage interface {
 	FetchUsers(in *pb.Filter) (*pb.UserResponses, error)
 	ListOfFollowing(in *pb.Id) (*pb.Followings, error)
 	ListOfFollowers(in *pb.Id) (*pb.Followers, error)
+	ListOfFollowingByUsername(req *pb.Id) (*pb.Followings, error)
+	ListOfFollowersByUsername(req *pb.Id) (*pb.Followers, error)
 	DeleteUser(in *pb.Id) (*pb.Void, error)
 
 	Follow(in *pb.FollowReq) (*pb.FollowRes, error)

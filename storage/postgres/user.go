@@ -157,7 +157,7 @@ func (p *UserRepo) ListOfFollowing(req *pb.Id) (*pb.Followings, error) {
 		if err := rows.Scan(&followingID); err != nil {
 			return nil, err
 		}
-		followings.Ids = append(followings.Ids, followingID)
+		followings.Following = append(followings.Following, followingID)
 	}
 
 	if err := rows.Err(); err != nil {
@@ -165,6 +165,69 @@ func (p *UserRepo) ListOfFollowing(req *pb.Id) (*pb.Followings, error) {
 	}
 
 	return followings, nil
+}
+
+func (p *UserRepo) ListOfFollowingByUsername(req *pb.Id) (*pb.Followings, error) {
+	followings := &pb.Followings{}
+
+	query := `
+		SELECT p2.username AS following_username
+		FROM follows f
+		JOIN user_profile p1 ON f.follower_id = p1.user_id
+		JOIN user_profile p2 ON f.following_id = p2.user_id
+		WHERE p1.username = $1;
+    `
+
+	rows, err := p.db.Query(query, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var followingUsername string
+		if err := rows.Scan(&followingUsername); err != nil {
+			return nil, err
+		}
+		followings.Following = append(followings.Following, followingUsername)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return followings, nil
+}
+
+func (p *UserRepo) ListOfFollowersByUsername(req *pb.Id) (*pb.Followers, error) {
+	followers := &pb.Followers{}
+	query := `
+		SELECT p2.username AS follower_username
+		FROM follows f
+		JOIN user_profile p1 ON f.following_id = p1.user_id
+		JOIN user_profile p2 ON f.follower_id = p2.user_id
+		WHERE p1.username = $1;
+    `
+
+	rows, err := p.db.Query(query, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var followerUsername string
+		if err := rows.Scan(&followerUsername); err != nil {
+			return nil, err
+		}
+		followers.Followers = append(followers.Followers, followerUsername)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return followers, nil
 }
 
 func (p *UserRepo) ListOfFollowers(req *pb.Id) (*pb.Followers, error) {
@@ -187,7 +250,7 @@ func (p *UserRepo) ListOfFollowers(req *pb.Id) (*pb.Followers, error) {
 		if err := rows.Scan(&followerID); err != nil {
 			return nil, err
 		}
-		followers.Ids = append(followers.Ids, followerID)
+		followers.Followers = append(followers.Followers, followerID)
 	}
 
 	if err := rows.Err(); err != nil {

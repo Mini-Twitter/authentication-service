@@ -18,6 +18,8 @@ type UserServices interface {
 	PostAdd(ctx context.Context, in *pb.Id) (*pb.Void, error) // MASHI NARSA YOQ
 	ListOfFollowing(ctx context.Context, in *pb.Id) (*pb.Followings, error)
 	ListOfFollowers(ctx context.Context, in *pb.Id) (*pb.Followers, error)
+	ListOfFollowingByUsername(ctx context.Context, in *pb.Id) (*pb.Followings, error)
+	ListOfFollowersByUsername(ctx context.Context, in *pb.Id) (*pb.Followers, error)
 	PostDelete(ctx context.Context, in *pb.Id) (*pb.Void, error) //MASHIYAM YOQ
 	DeleteUser(ctx context.Context, in *pb.Id) (*pb.Void, error)
 
@@ -123,6 +125,24 @@ func (us *UserService) ListOfFollowing(ctx context.Context, in *pb.Id) (*pb.Foll
 
 func (us *UserService) ListOfFollowers(ctx context.Context, in *pb.Id) (*pb.Followers, error) {
 	res, err := us.st.ListOfFollowers(in)
+	if err != nil {
+		us.log.Error("failed to list followers", "error", err)
+		return nil, err
+	}
+	return res, nil
+}
+
+func (us *UserService) ListOfFollowingByUsername(ctx context.Context, in *pb.Id) (*pb.Followings, error) {
+	res, err := us.st.ListOfFollowingByUsername(in)
+	if err != nil {
+		us.log.Error("failed to list following", "error", err)
+		return nil, err
+	}
+	return res, nil
+}
+
+func (us *UserService) ListOfFollowersByUsername(ctx context.Context, in *pb.Id) (*pb.Followers, error) {
+	res, err := us.st.ListOfFollowersByUsername(in)
 	if err != nil {
 		us.log.Error("failed to list followers", "error", err)
 		return nil, err

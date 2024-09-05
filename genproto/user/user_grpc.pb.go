@@ -31,6 +31,8 @@ type UserServiceClient interface {
 	FetchUsers(ctx context.Context, in *Filter, opts ...grpc.CallOption) (*UserResponses, error)
 	ListOfFollowing(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Followings, error)
 	ListOfFollowers(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Followers, error)
+	ListOfFollowingByUsername(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Followings, error)
+	ListOfFollowersByUsername(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Followers, error)
 	DeleteUser(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Void, error)
 	// subscribe
 	Follow(ctx context.Context, in *FollowReq, opts ...grpc.CallOption) (*FollowRes, error)
@@ -120,6 +122,24 @@ func (c *userServiceClient) ListOfFollowers(ctx context.Context, in *Id, opts ..
 	return out, nil
 }
 
+func (c *userServiceClient) ListOfFollowingByUsername(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Followings, error) {
+	out := new(Followings)
+	err := c.cc.Invoke(ctx, "/user.UserService/ListOfFollowingByUsername", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) ListOfFollowersByUsername(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Followers, error) {
+	out := new(Followers)
+	err := c.cc.Invoke(ctx, "/user.UserService/ListOfFollowersByUsername", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userServiceClient) DeleteUser(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Void, error) {
 	out := new(Void)
 	err := c.cc.Invoke(ctx, "/user.UserService/DeleteUser", in, out, opts...)
@@ -187,6 +207,8 @@ type UserServiceServer interface {
 	FetchUsers(context.Context, *Filter) (*UserResponses, error)
 	ListOfFollowing(context.Context, *Id) (*Followings, error)
 	ListOfFollowers(context.Context, *Id) (*Followers, error)
+	ListOfFollowingByUsername(context.Context, *Id) (*Followings, error)
+	ListOfFollowersByUsername(context.Context, *Id) (*Followers, error)
 	DeleteUser(context.Context, *Id) (*Void, error)
 	// subscribe
 	Follow(context.Context, *FollowReq) (*FollowRes, error)
@@ -224,6 +246,12 @@ func (UnimplementedUserServiceServer) ListOfFollowing(context.Context, *Id) (*Fo
 }
 func (UnimplementedUserServiceServer) ListOfFollowers(context.Context, *Id) (*Followers, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListOfFollowers not implemented")
+}
+func (UnimplementedUserServiceServer) ListOfFollowingByUsername(context.Context, *Id) (*Followings, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListOfFollowingByUsername not implemented")
+}
+func (UnimplementedUserServiceServer) ListOfFollowersByUsername(context.Context, *Id) (*Followers, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListOfFollowersByUsername not implemented")
 }
 func (UnimplementedUserServiceServer) DeleteUser(context.Context, *Id) (*Void, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
@@ -400,6 +428,42 @@ func _UserService_ListOfFollowers_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_ListOfFollowingByUsername_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ListOfFollowingByUsername(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/ListOfFollowingByUsername",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ListOfFollowingByUsername(ctx, req.(*Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_ListOfFollowersByUsername_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ListOfFollowersByUsername(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/ListOfFollowersByUsername",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ListOfFollowersByUsername(ctx, req.(*Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Id)
 	if err := dec(in); err != nil {
@@ -546,6 +610,14 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListOfFollowers",
 			Handler:    _UserService_ListOfFollowers_Handler,
+		},
+		{
+			MethodName: "ListOfFollowingByUsername",
+			Handler:    _UserService_ListOfFollowingByUsername_Handler,
+		},
+		{
+			MethodName: "ListOfFollowersByUsername",
+			Handler:    _UserService_ListOfFollowersByUsername_Handler,
 		},
 		{
 			MethodName: "DeleteUser",

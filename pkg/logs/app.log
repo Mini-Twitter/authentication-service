@@ -154,3 +154,9 @@
 {"time":"2024-09-05T23:55:26.214676852+05:00","level":"ERROR","msg":"Invalid password"}
 {"time":"2024-09-05T23:55:26.214749963+05:00","level":"ERROR","msg":"Error occurred while login","!BADKEY":"Invalid password"}
 {"time":"2024-09-06T00:01:08.912436428+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-06T00:04:40.627451538+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-06T00:22:45.753464067+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-06T01:11:22.917521804+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-06T01:11:30.402112951+05:00","level":"ERROR","msg":"failed to list followers","error":"pq: invalid input syntax for type uuid: \"stringes\""}
+{"time":"2024-09-06T01:11:47.803013887+05:00","level":"ERROR","msg":"failed to list following","error":"pq: invalid input syntax for type uuid: \"stringes\""}
+{"time":"2024-09-06T01:15:33.564713609+05:00","level":"INFO","msg":"Starting server on port :50050"}
