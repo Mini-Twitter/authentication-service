@@ -140,9 +140,10 @@ func (p *UserRepo) ListOfFollowing(req *pb.Id) (*pb.Followings, error) {
 	followings := &pb.Followings{}
 
 	query := `
-        SELECT following_id 
-        FROM follows 
-        WHERE follower_id = $1;
+		SELECT p.username
+		FROM follows f
+		JOIN user_profile p ON f.following_id = p.user_id
+		WHERE f.follower_id = $1;
     `
 
 	rows, err := p.db.Query(query, req.UserId)
@@ -167,32 +168,33 @@ func (p *UserRepo) ListOfFollowing(req *pb.Id) (*pb.Followings, error) {
 }
 
 func (p *UserRepo) ListOfFollowers(req *pb.Id) (*pb.Followers, error) {
-	query := `SELECT f.follower_id, u.email, p.username 
-              FROM follows f
-              JOIN users u ON f.follower_id = u.id
-              JOIN user_profile p ON f.follower_id = p.user_id
-              WHERE f.following_id = $1`
+	followers := &pb.Followers{}
+	query := `
+		SELECT p.username
+		FROM follows f
+		JOIN user_profile p ON f.follower_id = p.user_id
+		WHERE f.following_id = $1;
+    `
 
 	rows, err := p.db.Query(query, req.UserId)
 	if err != nil {
-		return nil, fmt.Errorf("failed to execute query: %w", err)
+		return nil, err
 	}
 	defer rows.Close()
 
-	var followers []*pb.Follower
 	for rows.Next() {
-		var follower pb.Follower
-		if err := rows.Scan(&follower.UserId, &follower.Email, &follower.Username); err != nil {
-			return nil, fmt.Errorf("failed to scan row: %w", err)
+		var followerID string
+		if err := rows.Scan(&followerID); err != nil {
+			return nil, err
 		}
-		followers = append(followers, &follower)
+		followers.Ids = append(followers.Ids, followerID)
 	}
 
-	if err = rows.Err(); err != nil {
-		return nil, fmt.Errorf("rows iteration error: %w", err)
+	if err := rows.Err(); err != nil {
+		return nil, err
 	}
 
-	return &pb.Followers{Followers: followers}, nil
+	return followers, nil
 }
 
 func (p *UserRepo) DeleteUser(req *pb.Id) (*pb.Void, error) {

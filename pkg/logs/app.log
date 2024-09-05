@@ -146,3 +146,11 @@
 {"time":"2024-09-05T21:29:06.869396886+05:00","level":"INFO","msg":"Starting server on port :50050"}
 {"time":"2024-09-05T21:29:25.034285812+05:00","level":"ERROR","msg":"failed to get user","error":"sql: no rows in result set"}
 {"time":"2024-09-05T21:32:53.279291389+05:00","level":"ERROR","msg":"failed to follow","error":"pq: invalid input syntax for type uuid: \"string\""}
+{"time":"2024-09-05T23:30:15.985106181+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T23:32:49.67011912+05:00","level":"ERROR","msg":"Invalid password"}
+{"time":"2024-09-05T23:32:49.67018424+05:00","level":"ERROR","msg":"Error occurred while login","!BADKEY":"Invalid password"}
+{"time":"2024-09-05T23:46:11.753109644+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T23:55:22.192554418+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-05T23:55:26.214676852+05:00","level":"ERROR","msg":"Invalid password"}
+{"time":"2024-09-05T23:55:26.214749963+05:00","level":"ERROR","msg":"Error occurred while login","!BADKEY":"Invalid password"}
+{"time":"2024-09-06T00:01:08.912436428+05:00","level":"INFO","msg":"Starting server on port :50050"}
