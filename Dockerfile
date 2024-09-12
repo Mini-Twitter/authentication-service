@@ -3,6 +3,8 @@ FROM golang:1.23.0 AS builder
 WORKDIR /app
 
 COPY go.mod go.sum ./
+COPY .env .
+
 RUN go mod download
 
 COPY . .

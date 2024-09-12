@@ -1,0 +1,63 @@
+name: Go CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: twitter_auth
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 123321
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.x'  # Use the appropriate Go version for your project
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h postgres -p 5432 -U postgres; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 5
+          done
+
+      - name: Set environment variables for testing
+        env:
+          DB_HOST: postgres       # Use 'postgres' as the hostname, matching your .env file
+          DB_PORT: 5432
+          DB_NAME: twitter_auth
+          DB_USER: postgres
+          DB_PASSWORD: 123321
+        run: echo "Environment variables for testing set."
+
+      - name: Run unit tests
+        env:
+          DB_HOST: postgres
+          DB_PORT: 5432
+          DB_NAME: twitter_auth
+          DB_USER: postgres
+          DB_PASSWORD: 123321
+        run: go test -v ./... # Run all tests in all subdirectories

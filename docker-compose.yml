@@ -4,7 +4,7 @@ services:
   migrate:
     image: "migrate/migrate"
     networks:
-      - success-net
+      - tweetNet
     volumes:
       - ./migrations:/migrations
     command: ["-path", "/migrations", "-database", "postgres://postgres:123321@postgres:5432/twitter_auth?sslmode=disable", "up"]
@@ -21,7 +21,7 @@ services:
       - POSTGRES_DB=twitter_auth
 
     networks:
-      - success-net
+      - tweetNet
     ports:
       - 5435:5432
     volumes:
@@ -32,6 +32,15 @@ services:
       timeout: 10s
       retries: 5
 
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6378:6379"
+    networks:
+      - tweetNet
+
+
   auth:
     container_name: tweet-auth
     build: .
@@ -39,23 +48,15 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      - success-net
+      - tweetNet
     ports:
       - "8081:8081"
       - "50050:50050"
 
-  redis:
-    image: redis:latest
-    container_name: redis
-    ports:
-      - "6378:6379"
-    networks:
-      - success-net
-
 
 networks:
-  success-net:
-    name: success-net
+  tweetNet:
+    name: tweetNet
     driver: bridge
 
 volumes:

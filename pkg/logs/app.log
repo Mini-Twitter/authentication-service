@@ -160,3 +160,11 @@
 {"time":"2024-09-06T01:11:30.402112951+05:00","level":"ERROR","msg":"failed to list followers","error":"pq: invalid input syntax for type uuid: \"stringes\""}
 {"time":"2024-09-06T01:11:47.803013887+05:00","level":"ERROR","msg":"failed to list following","error":"pq: invalid input syntax for type uuid: \"stringes\""}
 {"time":"2024-09-06T01:15:33.564713609+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-06T16:29:18.65317933+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-06T16:33:02.773362587+05:00","level":"ERROR","msg":"Failed to login","error":"pq: password authentication failed for user \"postgres\""}
+{"time":"2024-09-06T16:33:02.773397379+05:00","level":"ERROR","msg":"Error occurred while login","!BADKEY":"pq: password authentication failed for user \"postgres\""}
+{"time":"2024-09-06T16:35:53.844970933+05:00","level":"ERROR","msg":"Failed to login","error":"pq: password authentication failed for user \"postgres\""}
+{"time":"2024-09-06T16:35:53.844999857+05:00","level":"ERROR","msg":"Error occurred while login","!BADKEY":"pq: password authentication failed for user \"postgres\""}
+{"time":"2024-09-06T16:37:14.328754732+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-07T20:47:59.462943449+05:00","level":"INFO","msg":"Starting server on port :50050"}
+{"time":"2024-09-09T14:44:13.185004273+05:00","level":"INFO","msg":"Starting server on port :50050"}
