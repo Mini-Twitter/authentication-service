@@ -32,7 +32,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.x'  # Use the appropriate Go version for your project
+          go-version: '1.22.6'
 
       - name: Install dependencies
         run: go mod download
@@ -47,7 +47,7 @@ jobs:
 
       - name: Set environment variables for testing
         env:
-          DB_HOST: postgres       # Use 'postgres' as the hostname, matching your .env file
+          DB_HOST: localhost
           DB_PORT: 5432
           DB_NAME: twitter_auth
           DB_USER: postgres
@@ -56,7 +56,7 @@ jobs:
 
       - name: Run unit tests
         env:
-          DB_HOST: postgres
+          DB_HOST: localhost
           DB_PORT: 5432
           DB_NAME: twitter_auth
           DB_USER: postgres
