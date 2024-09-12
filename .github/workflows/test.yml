@@ -61,4 +61,4 @@ jobs:
           DB_NAME: twitter_auth
           DB_USER: postgres
           DB_PASSWORD: 123321
-        run: go test -v ./... # Run all tests in all subdirectories
+        run: go test -v ./...
