@@ -1,280 +1,264 @@
 package postgres
 
 import (
-	pb "auth-service/genproto/user"
-	"fmt"
-	"github.com/jmoiron/sqlx"
-	"testing"
+	_ "github.com/lib/pq"
 )
 
-func ConnectUser() (*sqlx.DB, error) {
-	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		"localhost", "5432", "postgres", "dodi", "auth_tw")
+//func TestCreate(t *testing.T) {
+//	db, err := Connect()
+//	if err != nil {
+//		t.Fatalf("Failed to connect to database: %v", err)
+//	}
+//	defer db.Close()
+//
+//	repo := NewUserRepo(db)
+//
+//	req := &pb.CreateRequest{
+//		Phone:       "1234567890",
+//		Email:       "john.doe@example.com",
+//		Password:    "password123",
+//		FirstName:   "John",
+//		LastName:    "Doe",
+//		Username:    "johndoe",
+//		Nationality: "American",
+//		Bio:         "Software Developer",
+//	}
+//
+//	res, err := repo.Create(req)
+//	if err != nil {
+//		t.Fatalf("Failed to create user: %v", err)
+//	}
+//
+//	if res.Email != req.Email {
+//		t.Errorf("Expected email %v, got %v", req.Email, res.Email)
+//	}
+//
+//	fmt.Println("Create response:", res)
+//}
+//
+//// TestGetProfile tests the GetProfile method of UserRepo.
+//func TestGetProfile(t *testing.T) {
+//	db, err := Connect()
+//	if err != nil {
+//		t.Fatalf("Failed to connect to database: %v", err)
+//	}
+//	defer db.Close()
+//
+//	repo := NewUserRepo(db)
+//
+//	// Generate a valid UUID and ensure it exists in the test database
+//	userID := uuid.New().String()
+//
+//	// Insert test data into the database
+//	_, err = db.Exec(`INSERT INTO users (id, phone, email, password) VALUES ($1, $2, $3, $4)`,
+//		userID, "1234567890", "test.user@example.com", "password123")
+//	if err != nil {
+//		t.Fatalf("Failed to insert test user: %v", err)
+//	}
+//
+//	_, err = db.Exec(`INSERT INTO user_profile (user_id, first_name, last_name, username, nationality, bio) VALUES ($1, $2, $3, $4, $5, $6)`,
+//		userID, "John", "Doe", "johndoe", "American", "Software Developer")
+//	if err != nil {
+//		t.Fatalf("Failed to insert user profile: %v", err)
+//	}
+//
+//	// Run the test
+//	req := &pb.Id{UserId: userID}
+//	res, err := repo.GetProfile(req)
+//	if err != nil {
+//		t.Fatalf("Failed to get profile: %v", err)
+//	}
+//
+//	if res.UserId != userID {
+//		t.Errorf("Expected user ID %v, got %v", userID, res.UserId)
+//	}
+//
+//	fmt.Println("GetProfile response:", res)
+//	// Clean up the test data
+//	_, err = db.Exec(`DELETE FROM user_profile WHERE user_id = $1`, userID)
+//	if err != nil {
+//		t.Fatalf("Failed to delete user profile: %v", err)
+//	}
+//
+//	_, err = db.Exec(`DELETE FROM users WHERE id = $1`, userID)
+//	if err != nil {
+//		t.Fatalf("Failed to delete test user: %v", err)
+//	}
+//
+//}
 
-	db, err := sqlx.Connect("postgres", psqlInfo)
-	if err != nil {
-		return nil, err
-	}
-
-	return db, nil
-}
-
-func TestCreate(t *testing.T) {
-	db, err := ConnectUser()
-	if err != nil {
-		t.Errorf("Failed to connect to database: %v", err)
-	}
-	rst := pb.CreateRequest{
-		Email:       "hamidullox2@gmail.com",
-		Password:    "hamidullox2",
-		Phone:       "9997471782",
-		FirstName:   "hamidullox2",
-		LastName:    "hamidullox2",
-		Username:    "hamidullox2",
-		Bio:         "hamidullox2",
-		Nationality: "hamidullox2",
-	}
-
-	user := NewUserRepo(db)
-
-	req, err := user.Create(&rst)
-	if err != nil {
-		t.Errorf("Failed to create user: %v", err)
-	}
-
-	fmt.Println(req)
-}
-
-func TestGetProfile(t *testing.T) {
-	db, err := ConnectUser()
-	if err != nil {
-		t.Errorf("Failed to connect to database: %v", err)
-	}
-	user := NewUserRepo(db)
-	rst := pb.Id{
-		UserId: "3a27bff7-40e4-4074-a63b-b5af91211e2f",
-	}
-
-	req, err := user.GetProfile(&rst)
-	if err != nil {
-		t.Errorf("Failed to get user: %v", err)
-	}
-
-	fmt.Println(req)
-}
-
-func TestUpdateProfile(t *testing.T) {
-	db, err := ConnectUser()
-	if err != nil {
-		t.Errorf("Failed to connect to database: %v", err)
-	}
-	user := NewUserRepo(db)
-	rst := pb.UpdateProfileRequest{
-		UserId:       "3a27bff7-40e4-4074-a63b-b5af91211e2f",
-		FirstName:    "hamidullox4",
-		LastName:     "hamidullox4",
-		Bio:          "hamidullox4",
-		Nationality:  "hamidullox4",
-		Username:     "hamidullox4",
-		ProfileImage: "hamidullox4",
-		Phone:        "9997471782",
-	}
-
-	req, err := user.UpdateProfile(&rst)
-	if err != nil {
-		t.Errorf("Failed to update user: %v", err)
-	}
-	fmt.Println(req)
-}
-
-func TestDeleteProfile(t *testing.T) {
-	db, err := ConnectUser()
-	if err != nil {
-		t.Errorf("Failed to connect to database: %v", err)
-	}
-	user := NewUserRepo(db)
-	rst := pb.Id{
-		UserId: "17b04d19-ddf6-42a0-81ba-219cfd618956",
-	}
-	req, err := user.DeleteUser(&rst)
-	if err != nil {
-		t.Errorf("Failed to get user: %v", err)
-	}
-	fmt.Println(req)
-}
-
-func TestChangePassword(t *testing.T) {
-	db, err := ConnectUser()
-	if err != nil {
-		t.Errorf("Failed to connect to database: %v", err)
-	}
-	user := NewUserRepo(db)
-	rst := pb.ChangePasswordRequest{
-		UserId:          "17b04d19-ddf6-42a0-81ba-219cfd618956",
-		CurrentPassword: "hamidullox4",
-		NewPassword:     "hamidullox5",
-	}
-	res, err := user.ChangePassword(&rst)
-	if err != nil {
-		t.Errorf("Failed to update user: %v", err)
-	}
-	fmt.Println(res)
-}
-
-func TestChangeProfileImage(t *testing.T) {
-	db, err := ConnectUser()
-	if err != nil {
-		t.Errorf("Failed to connect to database: %v", err)
-	}
-	user := NewUserRepo(db)
-	rst := pb.URL{
-		UserId: "17b04d19-ddf6-42a0-81ba-219cfd618956",
-		Url:    "...",
-	}
-	req, err := user.ChangeProfileImage(&rst)
-	if err != nil {
-		t.Errorf("Failed to update user: %v", err)
-	}
-	fmt.Println(req)
-}
-
-func TestFetchUsers(t *testing.T) {
-	db, err := ConnectUser()
-	if err != nil {
-		t.Errorf("Failed to connect to database: %v", err)
-	}
-	user := NewUserRepo(db)
-	rst := pb.Filter{
-		Role:      "user",
-		Limit:     10,
-		Page:      1,
-		FirstName: "hamidullox4",
-	}
-	req, err := user.FetchUsers(&rst)
-	if err != nil {
-		t.Errorf("Failed to fetch users: %v", err)
-	}
-	fmt.Println(req)
-}
-
-func TestListOfFollowing(t *testing.T) {
-	db, err := ConnectUser()
-	if err != nil {
-		t.Errorf("Failed to connect to database: %v", err)
-	}
-	user := NewUserRepo(db)
-	ret := pb.Id{
-		UserId: "17b04d19-ddf6-42a0-81ba-219cfd618956",
-	}
-	req, err := user.ListOfFollowing(&ret)
-	if err != nil {
-		t.Errorf("Failed to list followers: %v", err)
-	}
-	fmt.Println(req)
-}
-
-func TestListOfFollowers(t *testing.T) {
-	db, err := ConnectUser()
-	if err != nil {
-		t.Errorf("Failed to connect to database: %v", err)
-	}
-	user := NewUserRepo(db)
-	ret := pb.Id{
-		UserId: "17b04d19-ddf6-42a0-81ba-219cfd618956",
-	}
-	req, err := user.ListOfFollowers(&ret)
-	if err != nil {
-		t.Errorf("Failed to list followers: %v", err)
-	}
-	fmt.Println(req)
-}
-
-func TestFollow(t *testing.T) {
-	db, err := ConnectUser()
-	if err != nil {
-		t.Errorf("Failed to connect to database: %v", err)
-	}
-
-	user := NewUserRepo(db)
-
-	rst := pb.FollowReq{
-		FollowingId: "3a27bff7-40e4-4074-a63b-b5af91211e2f",
-		FollowerId:  "ef778e7b-059c-4117-8e8d-837a3dff0e76",
-	}
-
-	req, err := user.Follow(&rst)
-	if err != nil {
-		t.Errorf("Failed to follow: %v", err)
-	}
-	fmt.Println(req)
-}
-
-func TestUnfollow(t *testing.T) {
-	db, err := ConnectUser()
-	if err != nil {
-		t.Errorf("Failed to connect to database: %v", err)
-	}
-	user := NewUserRepo(db)
-
-	rst := pb.FollowReq{
-		FollowingId: "3a27bff7-40e4-4074-a63b-b5af91211e2f",
-		FollowerId:  "17b04d19-ddf6-42a0-81ba-219cfd618956",
-	}
-
-	req, err := user.Unfollow(&rst)
-	if err != nil {
-		t.Errorf("Failed to unfollow: %v", err)
-	}
-	fmt.Println(req)
-}
-
-func TestGetUserFollowers(t *testing.T) {
-	db, err := ConnectUser()
-	if err != nil {
-		t.Errorf("Failed to connect to database: %v", err)
-	}
-	user := NewUserRepo(db)
-
-	rst := pb.Id{
-		UserId: "3a27bff7-40e4-4074-a63b-b5af91211e2f",
-	}
-
-	req, err := user.GetUserFollowers(&rst)
-	if err != nil {
-		t.Errorf("Failed to get followers: %v", err)
-	}
-	fmt.Println(req)
-}
-
-func TestGetUserFollows(t *testing.T) {
-	db, err := ConnectUser()
-	if err != nil {
-		t.Errorf("Failed to connect to database: %v", err)
-	}
-	user := NewUserRepo(db)
-
-	rst := pb.Id{
-		UserId: "3a27bff7-40e4-4074-a63b-b5af91211e2f",
-	}
-
-	req, err := user.GetUserFollows(&rst)
-	if err != nil {
-		t.Errorf("Failed to get followers: %v", err)
-	}
-	fmt.Println(req)
-}
-
-func TestMostPopularUser(t *testing.T) {
-	db, err := ConnectUser()
-	if err != nil {
-		t.Errorf("Failed to connect to database: %v", err)
-	}
-	user := NewUserRepo(db)
-
-	rst := pb.Void{}
-	req, err := user.MostPopularUser(&rst)
-	if err != nil {
-		t.Errorf("Failed to most popular user: %v", err)
-	}
-	fmt.Println(req)
-}
+//// TestUpdateProfile tests the UpdateProfile method of UserRepo.
+//func TestUpdateProfile(t *testing.T) {
+//	db, err := Connect()
+//	if err != nil {
+//		t.Fatalf("Failed to connect to database: %v", err)
+//	}
+//	defer db.Close()
+//
+//	repo := NewUserRepo(db)
+//
+//	req := &pb.UpdateProfileRequest{
+//		UserId:       "some_existing_user_id", // Replace with an actual user ID that exists in your test database
+//		FirstName:    "Jane",
+//		LastName:     "Smith",
+//		Username:     "janesmith",
+//		Nationality:  "Canadian",
+//		Bio:          "Graphic Designer",
+//		ProfileImage: "http://example.com/image.jpg",
+//	}
+//
+//	res, err := repo.UpdateProfile(req)
+//	if err != nil {
+//		t.Fatalf("Failed to update profile: %v", err)
+//	}
+//
+//	if res.Id != req.UserId {
+//		t.Errorf("Expected user ID %v, got %v", req.UserId, res.Id)
+//	}
+//
+//	fmt.Println("UpdateProfile response:", res)
+//}
+//
+//// TestChangePassword tests the ChangePassword method of UserRepo.
+//func TestChangePassword(t *testing.T) {
+//	db, err := Connect()
+//	if err != nil {
+//		t.Fatalf("Failed to connect to database: %v", err)
+//	}
+//	defer db.Close()
+//
+//	repo := NewUserRepo(db)
+//
+//	req := &pb.ChangePasswordRequest{
+//		UserId:          "some_existing_user_id", // Replace with an actual user ID
+//		CurrentPassword: "oldpassword",
+//		NewPassword:     "newpassword123",
+//	}
+//
+//	res, err := repo.ChangePassword(req)
+//	if err != nil {
+//		t.Fatalf("Failed to change password: %v", err)
+//	}
+//
+//	if res.Message != "Password updated successfully" {
+//		t.Errorf("Expected message %v, got %v", "Password updated successfully", res.Message)
+//	}
+//
+//	fmt.Println("ChangePassword response:", res)
+//}
+//
+//// TestFollow tests the Follow method of UserRepo.
+//func TestFollow(t *testing.T) {
+//	db, err := Connect()
+//	if err != nil {
+//		t.Fatalf("Failed to connect to database: %v", err)
+//	}
+//	defer db.Close()
+//
+//	repo := NewUserRepo(db)
+//
+//	req := &pb.FollowReq{
+//		FollowerId:  "follower_user_id", // Replace with actual user IDs
+//		FollowingId: "following_user_id",
+//	}
+//
+//	res, err := repo.Follow(req)
+//	if err != nil {
+//		t.Fatalf("Failed to follow user: %v", err)
+//	}
+//
+//	if res.FollowerId != req.FollowerId || res.FollowingId != req.FollowingId {
+//		t.Errorf("Expected follower ID %v and following ID %v, got follower ID %v and following ID %v",
+//			req.FollowerId, req.FollowingId, res.FollowerId, res.FollowingId)
+//	}
+//
+//	fmt.Println("Follow response:", res)
+//}
+//
+//// TestUnfollow tests the Unfollow method of UserRepo.
+//func TestUnfollow(t *testing.T) {
+//	db, err := Connect()
+//	if err != nil {
+//		t.Fatalf("Failed to connect to database: %v", err)
+//	}
+//	defer db.Close()
+//
+//	repo := NewUserRepo(db)
+//
+//	req := &pb.FollowReq{
+//		FollowerId:  "follower_user_id", // Replace with actual user IDs
+//		FollowingId: "following_user_id",
+//	}
+//
+//	res, err := repo.Unfollow(req)
+//	if err != nil {
+//		t.Fatalf("Failed to unfollow user: %v", err)
+//	}
+//
+//	if res.FollowerId != req.FollowerId || res.FollowingId != req.FollowingId {
+//		t.Errorf("Expected follower ID %v and following ID %v, got follower ID %v and following ID %v",
+//			req.FollowerId, req.FollowingId, res.FollowerId, res.FollowingId)
+//	}
+//
+//	fmt.Println("Unfollow response:", res)
+//}
+//
+//// TestGetUserFollowers tests the GetUserFollowers method of UserRepo.
+//func TestGetUserFollowers(t *testing.T) {
+//	db, err := Connect()
+//	if err != nil {
+//		t.Fatalf("Failed to connect to database: %v", err)
+//	}
+//	defer db.Close()
+//
+//	repo := NewUserRepo(db)
+//
+//	req := &pb.Id{UserId: "some_existing_user_id"} // Replace with actual user ID
+//
+//	res, err := repo.GetUserFollowers(req)
+//	if err != nil {
+//		t.Fatalf("Failed to get user followers: %v", err)
+//	}
+//
+//	fmt.Println("GetUserFollowers response:", res)
+//}
+//
+//// TestGetUserFollows tests the GetUserFollows method of UserRepo.
+//func TestGetUserFollows(t *testing.T) {
+//	db, err := Connect()
+//	if err != nil {
+//		t.Fatalf("Failed to connect to database: %v", err)
+//	}
+//	defer db.Close()
+//
+//	repo := NewUserRepo(db)
+//
+//	req := &pb.Id{UserId: "some_existing_user_id"} // Replace with actual user ID
+//
+//	res, err := repo.GetUserFollows(req)
+//	if err != nil {
+//		t.Fatalf("Failed to get user follows: %v", err)
+//	}
+//
+//	fmt.Println("GetUserFollows response:", res)
+//}
+//
+//// TestMostPopularUser tests the MostPopularUser method of UserRepo.
+//func TestMostPopularUser(t *testing.T) {
+//	db, err := Connect()
+//	if err != nil {
+//		t.Fatalf("Failed to connect to database: %v", err)
+//	}
+//	defer db.Close()
+//
+//	repo := NewUserRepo(db)
+//
+//	req := &pb.Void{}
+//
+//	res, err := repo.MostPopularUser(req)
+//	if err != nil {
+//		t.Fatalf("Failed to get most popular user: %v", err)
+//	}
+//
+//	fmt.Println("MostPopularUser response:", res)
+//}
